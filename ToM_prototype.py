@@ -163,26 +163,28 @@ def save_to_google_sheets(package, worksheet_name="Sheet1"):
 
         answers = package.get("answer_set", {})
         new_row = [
-            answers.get("participant_id", ""),
-            answers.get("what", ""),
-            answers.get("context", ""),
-            answers.get("procedure", ""),
-            answers.get("mental_states", ""),
-            answers.get("mind_vs_emo", ""),
-            answers.get("understanding", ""),
-            answers.get("categorical_vs_continuous", ""),
-            answers.get("similarity", ""),
-            answers.get("social_perception", ""),
+            answers.get("participant_id", ""),  # participant number
+            answers.get("what", ""),  # Q1
+            answers.get("context", ""),  # Q2
+            answers.get("environment",""),  # Q3
+            answers.get("procedure", ""), # Q4
+            answers.get("mental_states", ""), # Q5
+            answers.get("mind_vs_emo", ""), # Q6 
+            answers.get("understanding", ""), # Q7
+            answers.get("categorical_vs_continuous", ""), # Q8
+            answers.get("similarity", ""),  #Q9
+            answers.get("social_perception", ""),  #Q10
             package.get("scenarios_all", {}).get("col1", ""),
             package.get("scenarios_all", {}).get("col2", ""),
             package.get("scenarios_all", {}).get("col3", ""),
             package.get("scenario", ""),
             package.get("preference_feedback", "")
         ]
+        
 
         existing = worksheet.get_all_values()
         headers = [
-            "participant_number", "q1", "q2", "q3", "q4", "q5", "q6", "q7","q8","q9",
+            "participant_number", "q1", "q2", "q3", "q4", "q5", "q6", "q7","q8","q9", "q10",
             "scenario_1", "scenario_2", "scenario_3", "final_scenario", "preference_feedback"
         ]
 
@@ -234,7 +236,7 @@ def extractChoices(msgs, testing):
         extractedChoices["participant_id"] = st.session_state.get('participant_id', '')
 
         expected_keys = [
-            "what", "context", "procedure", "mental_states", "mind_vs_emo",
+            "what", "context", "environment", "procedure", "mental_states", "mind_vs_emo",
             "understanding", "categorical_vs_continuous", "similarity", "social_perception"
         ]
 
@@ -250,6 +252,7 @@ def extractChoices(msgs, testing):
             "participant_id": st.session_state.get('participant_id', ''),
             "what": "",
             "context": "",
+            "environment": "",
             "procedure": "",
             "mental_states": "",
             "mind_vs_emo": "",
