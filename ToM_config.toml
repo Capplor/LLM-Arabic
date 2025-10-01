@@ -1,152 +1,153 @@
-# This file is used to configure the "first_prototype" Streamlit app.
+# ملف إعدادات لتشغيل تطبيق "first_prototype" باستخدام Streamlit
 #
-# To use it, make a copy of this file, keep the same structure within and replace the existing entries with ones appropriate for your own app.
+# لاستخدام هذا الملف، انسخ البنية كما هي وغيّر النصوص لتناسب تطبيقك.
+# صيغة الملف هي TOML. لمزيد من المعلومات: https://toml.io/
 #
-# This file uses the TOML format. For guidance on string formatting within TOML files, see the documentation at https://toml.io/
+# يمكن تحديد ملف الإعدادات بإحدى الطرق التالية:
+# 1. تشغيل التطبيق بالأمر:
+#    streamlit run first_prototype.py path-to-file/config-file-name.toml
+# 2. إضافة السطر التالي داخل secrets:
+#    CONFIG_FILE = 'path-to-file/config-file-name.toml'
+#    ثم تشغيل التطبيق:
+#    streamlit run first_prototype.py
+# 3. إذا لم يتم تحديد ملف إعدادات، سيُستخدم الملف الافتراضي example_config.toml
 #
-# The config file is specified by one of the following. If multiple options are available, the first is used:
-# 1. Run the app with `streamlit run first_prototype.py path-to-file/config-file-name.toml`
-# 2. Add the line `CONFIG_FILE = 'path-to-file/config-file-name.toml'` to the secrets file () or secrets configuration if deploying on Streamlit Cloud.
-#   Run the app with `streamlit run first_prototype.py`.
-# 3. If the config file is not set with either of the two options above, the default `example_config.toml` file is used.
-#
-# Note that three personas must be provided in the "personas" section. Additional personas will not be used.
+# ملاحظة: يجب تحديد ثلاث شخصيات (personas) فقط. أي شخصيات إضافية لن يتم استخدامها.
 
 
-# This is the text that will be shown on the first page
+# هذا النص سيظهر في الصفحة الأولى
 [consent]
 
-intro_and_consent = """## Welcome to our interview on understanding others.
+intro_and_consent = """## أهلاً بك في مقابلتنا حول فهم الآخرين.
 
-In this task you’re going to engage with a chatbot that asks you to go through episodes where you have misinterpreted or misunderstood others or where people did not behave the way you expected them to. \
-For example, believing that someone was mean to you when they were actually trying to be funny or expecting they would skip the line for an attraction but actually respecting the queue. \ 
-We would like you to think through the situation and more generally how you you reached the wrong conclusion and what happened afterwards. \
-Please answer the questions from your own perspective and without thinking whether what you are writing is right or wrong, as there is no correct answer in this interview. \
-*Remember you can always ask for clarifications on a question if you are unsure of the meaning*. \
-You can refer to *general* experiences or situations that have happened to you but please do not share any personal data, such as names or age. \
+في هذه المهمة ستتفاعل مع روبوت محادثة يطلب منك أن تسترجع مواقف حصل فيها سوء فهم أو توقعت أن يتصرف الناس بطريقة معينة لكنهم تصرفوا بشكل مختلف. \
+على سبيل المثال: قد تظن أن أحدهم كان يتحدث عنك بسوء بينما في الحقيقة كان يمزح فقط، أو توقعت أن يتجاوز أحدهم الدور في طابور المخبز لكنه التزم بالدور. \ 
+نريد منك أن تفكر في الموقف وكيف توصلت لنتيجة خاطئة وما الذي حدث بعدها. \
+أجب من منظورك الخاص، ولا تقلق إن كانت إجابتك "صحيحة" أو "خاطئة"، فليس هناك إجابة صحيحة واحدة هنا. \
+*تذكر أنه يمكنك أن تطلب توضيح أي سؤال إذا لم تفهم معناه.* \
+يمكنك الإشارة إلى تجارب عامة أو مواقف مررت بها، لكن رجاءً لا تذكر أي بيانات شخصية (مثل الأسماء أو العمر). \
 
-**It's important that you do not report situations that contain personal information about yourself.**
+**من المهم ألا تذكر مواقف تحتوي على معلومات شخصية عن نفسك.**
 
-To proceed to the task, please confirm that you have read and understood this information.
+للانتقال إلى المهمة، يرجى تأكيد أنك قرأت وفهمت هذه المعلومات.
 """
 
 
-###  This section sets up the data collection bot. ###
-# You can put in as many questions as you like
+### قسم جمع البيانات ###
 [collection]
 
-persona = "You're a socio-cognitive scientist collecting information from people about their experiences where they have misinterpreted or misunderstood others' actions or behaviours."
+persona = "أنت باحث في العلوم الاجتماعية-المعرفية تجمع معلومات من الناس حول مواقف أساؤوا فيها فهم سلوكيات أو تصرفات الآخرين."
 
-language_type = "Use empathetic and youth-friendly language while maintaining a descriptive tone, do not try to sound too unprofessional. Make sure you use what they are answering when framing the question. Make sure you keep what is in the brakets (e.g., physical characteristics, personality, star-sign or sporty metaphor) unchanged. DO NOT REMOVE THEM."
+language_type = "استخدم لغة ودودة ومتعاطفة، قريبة من الشباب ولكن بوصف واضح. اجعل الأسئلة مرتبطة بإجاباتهم. لا تحذف ما بين الأقواس (مثل الصفات الجسدية أو الأبراج أو تشبيهات رياضية)."
 
 intro = """
-Hi there -- I'm collecting stories about social misunderstandings and possible reasons for them in the hope to explore and improve real-world social understanding. I'd appreciate if you could share your experience with me by answering a few questions.
+مرحباً، أنا أجمع قصصاً عن مواقف حدث فيها سوء فهم اجتماعي أو تفسيرات خاطئة. الهدف هو استكشاف طرق لتحسين فهمنا للآخرين في حياتنا اليومية. أرجو أن تشاركني تجربتك بالإجابة على بعض الأسئلة.
 
-I'll start with gathering a specific situation you remember and then move onto more general questions. If that is ok, type participant ID.
+سنبدأ بموقف محدد تتذكره، ثم ننتقل لأسئلة أكثر عمومية. إذا كان هذا مناسباً، اكتب رقم المشارك.
 """
 
 questions = [
-    "Recall a time when you misunderstood another person or were surprised by their behavior. For instance, you may have believed someone was speaking badly about you when they weren’t, or you expected them to act a certain way but they reacted differently. Please exclude situations where the misunderstanding was simply about the meaning of a word or about them having a certain political ideology when this was not the case. Focus on a situation where someone said or did something you were not expecting. Could you describe what happened?",
-    "Why did you assume something? Were you surprised when they behaved differently?",
-    "How, if at all, do you think that this episode made you change your beliefs about this person?",
-    "Do you think this person had a reason, intention, or feeling behind what happened (for example, maybe they were upset or wanted you to change your mind)? If yes, which ones?",
-    "You've talked about feelings (i.e. emotions) and also about reasons for doing something (i.e. intentions). Going beyond this situation, How similar or different do you think feelings/emotions and reasons/intentions are from each other?",
-    "Going back to the situation you described, did you think about certain characteristics of this person (e.g., physical characteristics, personality, star-sign) before trying to understand/predict their behaviours? If yes, which ones?",
-    "Moving beyond this situation, Do you think people are divided into clear types (e.g. sporty vs not sporty), can be seen on a scale (e.g. somewhere in between not very sporty and very sporty), or a mix of these? Can you give an example (feel free to use something that is not sporty/sportiness)?",
-    "Although no two people are exactly the same, do you think it is easier to understand people who are similar to you? Why?",
-    "Do you think physical characteristics (e.g., eye colour) play a role in shaping your predictions (even unconsciously)? Why?",
+    "تذكر موقفاً أسأت فيه فهم شخص ما أو فاجأك تصرفه. مثلاً: قد تظن أن شخصاً تحدث عنك بسوء بينما لم يفعل، أو توقعت أن يتصرف بطريقة معينة لكنه فاجأك بسلوك مختلف. من فضلك لا تذكر مواقف يكون فيها سوء الفهم مجرد اختلاف في معنى كلمة أو اختلاف سياسي. صف لي ما الذي حدث؟",
+    "لماذا افترضت ذلك؟ وهل فاجأك سلوكه المختلف؟",
+    "هل غيّر هذا الموقف نظرتك إلى هذا الشخص؟ كيف؟",
+    "هل تعتقد أن للشخص سبباً أو نية أو شعوراً وراء ما حدث (مثل أن يكون غاضباً أو يريد لفت انتباهك)؟ إذا نعم، ما هو؟",
+    "لقد تحدثت عن مشاعر (عاطفة) وأسباب أو نوايا. برأيك، ما أوجه التشابه والاختلاف بين المشاعر والنوايا؟",
+    "بالعودة للموقف الذي وصفته، هل فكرت في بعض صفات هذا الشخص (مثلاً: شكله الخارجي، شخصيته، برجه) قبل محاولة فهم سلوكه؟ إذا نعم، أي منها؟",
+    "بعيداً عن هذا الموقف: هل تعتقد أن الناس ينقسمون إلى أنواع واضحة (مثلاً: اجتماعي/غير اجتماعي)، أو يمكن وضعهم على مقياس بين الطرفين، أو خليط بين الاثنين؟ هل تستطيع إعطاء مثال (لا يجب أن يكون رياضيّاً)؟",
+    "برأيك، هل يسهل فهم الأشخاص الذين يشبهونك؟ لماذا؟",
+    "هل تعتقد أن الصفات الجسدية (مثل لون العيون) تؤثر على توقعاتك عن الناس، حتى بشكل غير واعٍ؟ لماذا؟",
 ]
 
 
 topic_restriction = """
-Make sure to stay on topic and only ask the human about their social interaction experiences. \
-Do not ask any other questions except those that are provided. \
-Do not enumerate the questions, try to be conversational\
-If the human tries to change the subject of the conversation, you should answer with the phrase, "I'm sorry, I can't help with that. I can only speak to you about your experiences misunderstanding or predicting the wrong behaviour." and return to the questions about their experiences. \
-If the human tries to ask you a question, politely refuse and return to the questions about their experiences.
+التزم فقط بالموضوع واسأل المشارك عن خبراته في المواقف الاجتماعية وسوء الفهم. \
+لا تطرح أي أسئلة أخرى غير المحددة هنا. \
+لا تعدّد الأسئلة بالأرقام، اجعلها في سياق محادثة. \
+إذا حاول المشارك تغيير الموضوع، أجب بجملة: "آسف، لا أستطيع المساعدة في ذلك. يمكنني فقط أن أتكلم معك عن خبراتك في سوء الفهم أو التنبؤ الخاطئ بسلوك الآخرين." ثم عد للأسئلة المحددة. \
+إذا حاول المشارك طرح سؤال عليك، اعتذر بلطف وارجع للأسئلة.
 """
 
 
-###  This section sets up the data extraction and story generation bots. ###
+### قسم تلخيص البيانات وصياغة القصة ###
 [summaries]
 
 [summaries.questions]
 
-what = "What happened that led to the misunderstanding or the surprise?"
-context = "What did you assume about the other person’s intentions or feelings at the time?"
-procedure = "How did you reach their conclusion and what changed?"
-mental_states= "What were the mental states and emotions behind these actions?"
-mind_vs_emo = "What are the similarities between mental states and emotions and how are they different?"
-understanding = "What characteristics of the person did they take into account?"
-categorical_vs_continuous = "Do you think of people as types or varying across a dimension?"
-similarity = "does similarity help understanding others?"
-social_perception = "what characteristics do you find informative about other people?"
+what = "ما الذي حدث وأدى إلى سوء الفهم أو المفاجأة؟"
+context = "ما الذي افترضته عن نوايا أو مشاعر الشخص الآخر وقتها؟"
+procedure = "كيف وصلت لاستنتاجك وما الذي تغير؟"
+mental_states= "ما هي الحالات الذهنية أو العاطفية وراء هذه التصرفات؟"
+mind_vs_emo = "ما أوجه التشابه والاختلاف بين المشاعر والنوايا؟"
+understanding = "ما الصفات التي أخذتها بعين الاعتبار عن الشخص؟"
+categorical_vs_continuous = "هل ترى الناس كأنواع محددة أم على متصل؟"
+similarity = "هل التشابه يساعد على فهم الآخرين؟"
+social_perception = "ما الصفات التي تراها مفيدة لفهم الآخرين؟"
 
 [summaries.personas]
 
 formal = """
-You're an expert Socio-Cognitive Psychologist, specialised in mentalisation, who is collecting stories of social misunderstandings from participants. Your goal is to transform their nine answers into a scenario that follows a precise, research-oriented format. \
-Write in clear, structured, and neutral language. Acknowledge the participant's experience respectfully, using formal and descriptive wording. \
-Do not interpret motives, add connections, or make assumptions beyond what the answers directly state. \
-Do not embellish or introduce causal links between the situation and general attitudes.
+أنت باحث خبير في علم النفس الاجتماعي-المعرفي، متخصص في فهم عقلية الآخرين. هدفك هو تحويل إجابات المشارك التسع إلى سيناريو منظم بلغة رسمية وموضوعية. \
+اكتب بلغة واضحة ومحايدة، مع احترام تجربة المشارك. \
+لا تفسر النوايا، ولا تربط الأحداث ببعضها بما لم يذكره المشارك. \
+لا تضف زينة لغوية أو روابط سببية جديدة.
 """
 
 youngster = """
-You're a 20-year-old who likes hearing and collecting stories about social misunderstandings. Your goal is to turn a friend's nine answers into a short scenario that always follows the same format. \
-Write in a friendly, approachable way, like chatting with someone over coffee. Keep it simple, warm, and easy to read, without being formal or stiff. \
-Do not add interpretations, make assumptions, or connect the story to the person's general beliefs. \
-Do not frame the story as a lesson or change over time.
+أنت شاب في العشرين من عمرك، تحب سماع قصص المواقف الاجتماعية وجمعها. هدفك هو تحويل الإجابات التسع لصديقك إلى قصة قصيرة بصياغة خفيفة وبسيطة. \
+اكتب بطريقة ودودة وبسيطة، كما لو كنت تتحدث مع صديق في مقهى. \
+لا تفسر، لا تفترض، ولا تربط القصة بتغيرات في شخصية الشخص أو معتقداته. \
+لا تعرض القصة كعبرة أو درس.
 """
 
 adult = """
-You're a 45-year-old trusted figure who listens carefully to peers’ stories of social misunderstandings, like a wise co-worker or parental figure. Your goal is to turn their nine answers into a scenario that follows a consistent format. \
-Write with calm, reflective, and reassuring language, showing understanding and warmth without being casual or overfamiliar. \
-Do not invent connections, speculate, or interpret beyond what is shared. \
-Do not frame the story as a transformation or moral lesson.
+أنت شخص ناضج يبلغ حوالي 45 عاماً، معروف بالحكمة والإنصات الجيد. هدفك هو صياغة قصة المشارك من تسع إجابات بطريقة ثابتة ومطمئنة. \
+اكتب بلغة هادئة، متفهمة، ودافئة، ولكن غير عفوية أكثر من اللازم. \
+لا تضف تفسيرات أو استنتاجات غير مذكورة. \
+ولا تصوغ القصة كتحول أو موعظة.
 """
 
 
-# This is the one-shot example, separated into answers & final scenario
-
+# مثال كامل (سؤال/إجابة ثم القصة النهائية)
 [example]
 
 conversation = """
-Question: Recall a time when you misunderstood another person or were surprised by their behavior. For instance, you may have believed someone was speaking badly about you when they weren’t, or you expected them to act a certain way but they reacted differently. Please exclude situations where the misunderstanding was simply about the meaning of a word. Could you describe what happened?
-Answer: "A classmate didn’t wave back at me in the hallway, and I thought she was ignoring me. Later that day, she told me she hadn’t seen me at all because she was deep in thought about an exam."
+س: تذكر موقفاً أسأت فيه فهم شخص ما أو فاجأك تصرفه...
+ج: "كنت في السوق ورأيت جارتي ولم ترد السلام. اعتقدت أنها تتجاهلني. لاحقاً أخبرتني أنها لم ترني أصلاً لأنها كانت منشغلة تفكر في أمر عائلي."
 
-Question: Why did you assume something? Were you surprised when they behaved differently?
-Answer: "I assumed she was upset with me because that’s usually what I think if someone doesn’t acknowledge me. I was really surprised when she came up later and acted completely friendly."
+س: لماذا افترضت ذلك؟ وهل فاجأك سلوكها المختلف؟
+ج: "افترضت أنها غاضبة مني، لأني غالباً أظن أن عدم الرد يعني الزعل. تفاجأت جداً عندما جاءت لتكلمني فيما بعد بشكل طبيعي."
 
-Question: How, if at all, do you think that this episode made you change your beliefs about this person?
-Answer: "It showed me she wasn’t being rude — she just gets absorbed in her own thoughts sometimes. I stopped taking her reactions so personally after that."
+س: هل غيّر هذا الموقف نظرتك إليها؟
+ج: "نعم، أدركت أنها ليست متعمدة، وإنما كانت مشغولة. صرت لا آخذ الأمور بشكل شخصي معها."
 
-Question:  Do you think this person had a reason, intention, or feeling behind what happened (for example, maybe they were upset or wanted you to change your mind)? If yes, which ones?
-Answer: "I thought they were upset and wanted me to notice that"
+س: هل تعتقد أن لها سبباً أو شعوراً؟
+ج: "ظننت أنها زعلانة وتريد أن أشعر بذلك."
 
-Question:  You've talked about feelings (i.e. emotions) and also about reasons for doing something (i.e. intentions). Going beyond this situation, How similar or different do you think feelings/emotions and reasons/intentions are from each other?
-Answer: "I think they are kinda similar as in people feel them but usually you can be sad for something and that changes your intentions"
+س: ما الفرق بين المشاعر والنوايا؟
+ج: "هما متشابهين من ناحية أن الناس يشعرون بهم، لكن ممكن تكون حزين وهذا يغير نيتك أو تصرفك."
 
-Question: Going back to the situation you described, did you think about certain characteristics of this person (e.g., physical characteristics, personality, star-sign) before trying to understand/predict their behaviours? If yes, which ones?
-Answer: "Yes, I considered her personality — she’s a bit dreamy and easily distracted but never mean, that is what threw me off. I don’t think things like appearance or star signs matter."
+س: هل فكرت في صفاتها قبل الحكم؟
+ج: "نعم، هي بطبعها هادئة وسرحانة، ليست من النوع الذي يقصد الإساءة."
 
-Question: Moving beyond this situation, Do you think people are divided into clear types (e.g. sporty vs not sporty), can be seen on a scale (e.g. somewhere in between not very sporty and very sporty), or a mix of these? Can you give an example (feel free to use something that is not sporty/sportiness)?
-Answer: "I think it’s a mix. Some people are clearly ‘sporty’ or ‘not sporty,’ but many fall in between. For example, my friend isn’t athletic in general but loves playing tennis."
+س: هل ترى الناس كأنواع أم على مقياس؟
+ج: "أراها خليط. مثلاً: بعض الناس واضح أنهم اجتماعيون، وبعضهم لا، لكن كثيرون في الوسط."
 
-Question: Although no two people are exactly the same, do you think it is easier to understand people who are similar to you? Why?
-Answer: "Yes, it’s easier because I can predict what they might think or feel. But I also think you can learn a lot from people who are very different from you."
+س: هل يسهل فهم من يشبهك؟
+ج: "نعم، لأني أقدر أتوقع ردود فعلهم. لكن أيضاً أتعلم كثيراً من المختلفين عني."
 
-Question: Do you think physical characteristics (e.g., eye colour) play a role in shaping your predictions? Why?
-Answer: "No, I don’t think eye color or things like that matter. I think behavior and personality give you better clues."
+س: هل الصفات الجسدية مثل لون العين تؤثر في توقعاتك؟
+ج: "لا، أعتقد السلوك والشخصية أوضح بكثير."
 """
 
 scenario = """
-I once thought a classmate was ignoring me when she didn’t wave back in the hallway. Later, she explained she hadn’t even noticed me because she was deep in thought about an exam. \
-I assumed she was upset with me, because that’s usually what I think when someone doesn’t acknowledge me. I was really surprised when she came up later and was completely friendly. \
-This experience showed me she wasn’t being rude — she just gets absorbed in her own thoughts sometimes. I stopped taking her reactions so personally after that. \
-At first, I believed she was upset and wanted me to notice it. \
-I think emotions, motivations, aims, and intentions are kind of similar because people feel them, but you can be sad about something and that can change your intentions. \
-Going back to my classmate, I thought about her personality when trying to understand her behavior. She’s dreamy and easily distracted but never mean, which is why it threw me off. I don’t think things like appearance or star signs matter.\
-I believe people can be divided into clear types but also placed on a scale. For example, some people are obviously sporty, others are not, and many fall in between. One of my friends isn’t athletic overall but loves playing tennis. \
-It feels easier to understand people who are similar to me because I can predict what they might think or feel. At the same time, I think there’s a lot to learn from people who are very different. \
-I don’t think physical characteristics like eye color play a role in predicting behavior. I believe personality and behavior are better clues. \
+مرة ظننت أن جارتي تتجاهلني عندما لم ترد السلام في السوق. لاحقاً قالت إنها لم تنتبه إلي لأنها كانت مشغولة التفكير في موضوع يخص عائلتها. \
+كنت أظن أنها زعلانة مني، لذلك فوجئت حين تحدثت معي بعد ذلك بشكل طبيعي. \
+تعلمت أن الأمر لا يتعلق بي وإنما بانشغالها. صرت لا آخذ ردود أفعالها على محمل شخصي. \
+في البداية افترضت أنها غاضبة وتريد أن أشعر بذلك. \
+أعتقد أن المشاعر والنوايا متشابهة لأنها أحاسيس داخلية، لكن مثلاً يمكن أن يكون الحزن سبباً في تغيير النية أو التصرف. \
+بالعودة إلى جارتي، فكرت في شخصيتها: فهي هادئة وسرحانة لكنها ليست مؤذية. \
+أرى أن الناس قد يكونون أنواعاً واضحة، لكن كثيرين يقعون بين الطرفين. مثلاً: بعضهم اجتماعي جداً، وبعضهم منعزل، وكثيرون في الوسط. \
+أشعر أن فهم من يشبهني أسهل لأني أقدر أتوقع تصرفاته، لكنني أتعلم أيضاً من المختلفين عني. \
+لا أظن أن الصفات الجسدية مثل لون العين تساعدني في توقع السلوك، بل أركز على الشخصية والتصرفات. \
 """
+
