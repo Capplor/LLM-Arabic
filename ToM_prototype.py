@@ -29,7 +29,7 @@ os.environ["LANGCHAIN_API_KEY"] = st.secrets.get('LANGCHAIN_API_KEY', '')
 os.environ["LANGCHAIN_PROJECT"] = st.secrets.get('LANGCHAIN_PROJECT', '')
 os.environ["LANGCHAIN_TRACING_V2"] = 'true'
 os.environ["SPREADSHEET_URL"] = st.secrets.get('SPREADSHEET_URL', '')
-
+os.environ["REDIRECT_URL"] = st.secrets['REDIRECT_URL']
 # تحليل وسيطات الإدخال للتحقق من ملف الإعداد
 input_args = sys.argv[1:]
 if len(input_args):
@@ -519,105 +519,105 @@ def updateFinalScenario(new_scenario):
 
 
 
-def finaliseScenario_ar(package):
+def finaliseScenario(package):
     """
-    Arabic version: Displays final scenario, answers, and collects feedback.
-    Saves everything to Google Sheets when submitted.
+    يعرض السيناريو النهائي والإجابات ويجمع التعليقات.
+    يحفظ كل شيء في جداول جوجل عند الإرسال.
     """
-    # Check if we've already submitted - if so, show only the completion page
+    # التحقق مما إذا تم الإرسال بالفعل - إذا كان الأمر كذلك، اعرض صفحة الإكمال فقط
     if st.session_state.get('submitted', False):
-        show_completion_page_ar()
+        show_completion_page()
         return
     
-    st.header("مراجعة وتقديم الملاحظات")
+    st.header("مراجعة وتقديم ملاحظاتك")
     
-    # Show final scenario
+    # عرض السيناريو النهائي
     st.subheader("السيناريو النهائي")
     scenario_text = st.text_area(
-        "قم بتحرير السيناريو النهائي إذا لزم الأمر:",
+        "قم بتحرير سيناريوك النهائي إذا لزم الأمر:",
         value=package.get("scenario", "لم يتم إنشاء سيناريو بعد."),
         height=200,
-        key="final_scenario_editor_ar"
+        key="final_scenario_editor"
     )
     
-    # Update the scenario if edited
+    # تحديث السيناريو إذا تم تحريره
     if scenario_text != package.get("scenario", ""):
         package["scenario"] = scenario_text
         st.session_state.scenario_package = package
     
-    # Feedback input
+    # مدخلات التعليقات
     st.divider()
     st.subheader("ملاحظات موجزة")
     feedback_text = st.text_area(
-        "يرجى مشاركة سبب اختيارك لهذا الملخص على الآخرين:",
+        "يرجى مشاركة سبب اختيارك لهذا الملخص عن الآخرين:",
         value=st.session_state.get('feedback_text', ''),
         height=100,
-        key="final_feedback_ar"
+        key="final_feedback"
     )
     
-    # Store feedback in session state
+    # تخزين التعليقات في حالة الجلسة
     st.session_state['feedback_text'] = feedback_text
     package["preference_feedback"] = feedback_text
     
-    # Get redirect URL
+    # الحصول على رابط التوجيه
     redirect_url = st.secrets.get("REDIRECT_URL", "")
     
-    # Show the redirect section BEFORE the submit button
+    # عرض قسم التوجيه قبل زر الإرسال
     if redirect_url:
         st.markdown("---")
         st.markdown("### الخطوات التالية")
-        st.markdown("بعد تقديم ملاحظاتك، يرجى إكمال الاستبيان النهائي. إذا لم يظهر لك الشاشة أي شيء، يرجى العودة إلى Prolific والاتصال بالباحث")
+        st.markdown("بعد تقديم ملاحظاتك، يرجى إكمال الاستبيان النهائي. إذا لم تظهر الشاشة أي شيء، يرجى العودة إلى Prolific والاتصال بالباحث")
     st.markdown("---")
     
-    # Submit button - NO FORM
-    if st.button("تقديم جميع الملاحظات", type="primary", key="submit_feedback_ar"):
+    # زر الإرسال - بدون نموذج
+    if st.button("تقديم جميع الملاحظات", type="primary", key="submit_feedback"):
         with st.spinner("جاري حفظ بياناتك..."):
             if save_to_google_sheets(package):
-                # Clear everything and show success
+                # مسح كل شيء وعرض النجاح
                 st.empty()
                 
                 st.balloons()
-                st.success("🎉 شكراً لك! تم تقديم ملاحظاتك بنجاح.")
+                st.success("🎉 شكرًا لك! تم تقديم ملاحظاتك بنجاح.")
                 
-                # Show redirect immediately after success
+                # عرض التوجيه فورًا بعد النجاح
                 if redirect_url:
                     st.markdown("## مبروك! لقد أكملت الدراسة الرئيسية.")
                     st.markdown("### الخطوة النهائية: استبيان موجز")
                     st.markdown("يرجى إكمال الاستبيان النهائي باستخدام الرابط أدناه:")
                     
-                    # Create a prominent button
+                    # إنشاء زر بارز
                     st.markdown(
                         f'<div style="text-align: center; margin: 30px 0;">'
                         f'<a href="{redirect_url}" target="_blank">'
                         f'<button style="background-color: #4CAF50; color: white; padding: 20px 40px; border: none; border-radius: 10px; cursor: pointer; font-size: 20px; margin: 20px 0; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">'
-                        f'🚀 أكمل الاستبيان النهائي'
+                        f'🚀 إكمال الاستبيان النهائي'
                         f'</button>'
                         f'</a>'
                         f'</div>',
                         unsafe_allow_html=True
                     )
                     
-                    st.info("سيتم فتح الاستبيان في علامة تبويب جديدة. يرجى إكماله الآن لإنهاء مشاركتك.")
+                    st.info("سيفتح الاستبيان في علامة تبويب جديدة. يرجى إكماله الآن لإنهاء مشاركتك.")
                     
-                    # Alternative link
+                    # رابط بديل
                     st.markdown(f"**إذا لم يعمل الزر، استخدم هذا الرابط:**")
                     st.markdown(f'<a href="{redirect_url}" target="_blank" style="color: #1f77b4; text-decoration: underline;">{redirect_url}</a>', unsafe_allow_html=True)
                 
-                # Update state
+                # تحديث الحالة
                 st.session_state['submitted'] = True
                 st.session_state['agentState'] = 'completed'
                 
-                # Stop further execution to prevent the form from showing again
+                # إيقاف التنفيذ الإضافي لمنع ظهور النموذج مرة أخرى
                 st.stop()
             else:
                 st.error("حدث خطأ في حفظ بياناتك. يرجى المحاولة مرة أخرى.")
 
-def show_completion_page_ar():
+def show_completion_page():
     """
-    Arabic version: Simple completion page as fallback
+    صفحة إكمال بسيطة كبديل
     """
     st.balloons()
-    st.success("🎉 شكراً لك على المشاركة!")
+    st.success("🎉 شكرًا لك على المشاركة!")
     
     redirect_url = st.secrets.get("REDIRECT_URL", "")
     if redirect_url:
