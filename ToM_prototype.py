@@ -519,93 +519,121 @@ def updateFinalScenario(new_scenario):
 
 
 
-def finaliseScenario(package):
+def finaliseScenario_ar(package):
+    """
+    Arabic version: Displays final scenario, answers, and collects feedback.
+    Saves everything to Google Sheets when submitted.
+    """
+    # Check if we've already submitted - if so, show only the completion page
     if st.session_state.get('submitted', False):
-        show_completion_page()
+        show_completion_page_ar()
         return
-
-    st.header("مراجعة وتأكيد اختيارك")
-
+    
+    st.header("مراجعة وتقديم الملاحظات")
+    
+    # Show final scenario
     st.subheader("السيناريو النهائي")
     scenario_text = st.text_area(
-        "يمكنك تعديل السيناريو النهائي إذا رغبت:",
+        "قم بتحرير السيناريو النهائي إذا لزم الأمر:",
         value=package.get("scenario", "لم يتم إنشاء سيناريو بعد."),
         height=200,
-        key="final_scenario_editor"
+        key="final_scenario_editor_ar"
     )
-
+    
+    # Update the scenario if edited
     if scenario_text != package.get("scenario", ""):
         package["scenario"] = scenario_text
         st.session_state.scenario_package = package
-
+    
+    # Feedback input
     st.divider()
-    st.subheader("ملاحظات عامة")
+    st.subheader("ملاحظات موجزة")
     feedback_text = st.text_area(
-        "شارك لماذا اخترت هذا السيناريو بدلًا من الآخرين:",
+        "يرجى مشاركة سبب اختيارك لهذا الملخص على الآخرين:",
         value=st.session_state.get('feedback_text', ''),
         height=100,
-        key="final_feedback"
+        key="final_feedback_ar"
     )
-
+    
+    # Store feedback in session state
     st.session_state['feedback_text'] = feedback_text
     package["preference_feedback"] = feedback_text
-
-    if st.button("إرسال جميع الملاحظات ✅", type="primary", key="submit_feedback"):
-        with st.spinner("جارٍ حفظ البيانات..."):
+    
+    # Get redirect URL
+    redirect_url = st.secrets.get("REDIRECT_URL", "")
+    
+    # Show the redirect section BEFORE the submit button
+    if redirect_url:
+        st.markdown("---")
+        st.markdown("### الخطوات التالية")
+        st.markdown("بعد تقديم ملاحظاتك، يرجى إكمال الاستبيان النهائي. إذا لم يظهر لك الشاشة أي شيء، يرجى العودة إلى Prolific والاتصال بالباحث")
+    st.markdown("---")
+    
+    # Submit button - NO FORM
+    if st.button("تقديم جميع الملاحظات", type="primary", key="submit_feedback_ar"):
+        with st.spinner("جاري حفظ بياناتك..."):
             if save_to_google_sheets(package):
+                # Clear everything and show success
+                st.empty()
+                
+                st.balloons()
+                st.success("🎉 شكراً لك! تم تقديم ملاحظاتك بنجاح.")
+                
+                # Show redirect immediately after success
+                if redirect_url:
+                    st.markdown("## مبروك! لقد أكملت الدراسة الرئيسية.")
+                    st.markdown("### الخطوة النهائية: استبيان موجز")
+                    st.markdown("يرجى إكمال الاستبيان النهائي باستخدام الرابط أدناه:")
+                    
+                    # Create a prominent button
+                    st.markdown(
+                        f'<div style="text-align: center; margin: 30px 0;">'
+                        f'<a href="{redirect_url}" target="_blank">'
+                        f'<button style="background-color: #4CAF50; color: white; padding: 20px 40px; border: none; border-radius: 10px; cursor: pointer; font-size: 20px; margin: 20px 0; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">'
+                        f'🚀 أكمل الاستبيان النهائي'
+                        f'</button>'
+                        f'</a>'
+                        f'</div>',
+                        unsafe_allow_html=True
+                    )
+                    
+                    st.info("سيتم فتح الاستبيان في علامة تبويب جديدة. يرجى إكماله الآن لإنهاء مشاركتك.")
+                    
+                    # Alternative link
+                    st.markdown(f"**إذا لم يعمل الزر، استخدم هذا الرابط:**")
+                    st.markdown(f'<a href="{redirect_url}" target="_blank" style="color: #1f77b4; text-decoration: underline;">{redirect_url}</a>', unsafe_allow_html=True)
+                
+                # Update state
                 st.session_state['submitted'] = True
                 st.session_state['agentState'] = 'completed'
-                st.rerun()
+                
+                # Stop further execution to prevent the form from showing again
+                st.stop()
             else:
-                st.error("حدث خطأ أثناء حفظ البيانات. يرجى المحاولة مرة أخرى.")
+                st.error("حدث خطأ في حفظ بياناتك. يرجى المحاولة مرة أخرى.")
 
-
-def show_completion_page():
-    st.empty()
-
-    col1, col2, col3 = st.columns([1, 3, 1])
-
-    with col2:
-        st.balloons()
-        st.success("🎉 شكرًا جزيلاً! تم إرسال ملاحظاتك بنجاح.")
-
-        redirect_url = st.secrets.get("REDIRECT_URL", "")
-
-        if redirect_url:
-            st.markdown("## تهانينا! لقد أنهيت الجزء الرئيسي من الدراسة.")
-            st.markdown("### الخطوة الأخيرة: استبيان قصير")
-            st.markdown("اضغط على الزر أدناه لإكمال استبيان قصير (5-10 دقائق):")
-
-            st.markdown(
-                f'<div style="text-align: center; margin: 30px 0;">'
-                f'<a href="{redirect_url}" target="_blank">'
-                f'<button style="background-color: #4CAF50; color: white; padding: 20px 40px; border: none; border-radius: 10px; cursor: pointer; font-size: 20px; margin: 20px 0; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">'
-                f'🚀 أكمل الاستبيان النهائي'
-                f'</button>'
-                f'</a>'
-                f'</div>',
-                unsafe_allow_html=True
-            )
-
-            st.info(
-                "**مهم:** \n"
-                "- سيتم فتح الاستبيان في نافذة جديدة\n"
-                "- يرجى إكماله الآن لإنهاء مشاركتك\n"
-                "- بعد الإرسال يمكنك إغلاق هذه الصفحة"
-            )
-
-            st.markdown(f"**إذا لم يعمل الزر، انسخ الرابط ولصقه في المتصفح:**")
-            st.code(redirect_url)
-        else:
-            st.info("شكرًا لمشاركتك! انتهت هذه الجلسة.")
-
-        with st.expander("بدء جلسة جديدة (للاختبار)"):
-            if st.button("إعادة ضبط وبدء جديد"):
-                for key in list(st.session_state.keys()):
-                    del st.session_state[key]
-                st.session_state['agentState'] = 'start'
-                st.rerun()
-
+def show_completion_page_ar():
+    """
+    Arabic version: Simple completion page as fallback
+    """
+    st.balloons()
+    st.success("🎉 شكراً لك على المشاركة!")
+    
+    redirect_url = st.secrets.get("REDIRECT_URL", "")
+    if redirect_url:
+        st.markdown(f"""
+        ### الاستبيان النهائي
+        
+        يرجى إكمال الاستبيان النهائي:
+        [انقر هنا لفتح]({redirect_url})
+        """)
+    
+    if st.button("بدء جلسة جديدة"):
+        for key in list(st.session_state.keys()):
+            if key != 'consent':
+                del st.session_state[key]
+        st.session_state['agentState'] = 'start'
+        st.experimental_rerun()
 
 def stateAgent():
     testing = False
