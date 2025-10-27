@@ -1,9 +1,9 @@
 from langchain_community.chat_message_histories import StreamlitChatMessageHistory
-from langchain.memory import ConversationBufferMemory
+from langchain_classic.memory import ConversationBufferMemory
 from langchain_core.prompts import PromptTemplate
-from langchain.chains import ConversationChain
+from langchain_classic.chains import ConversationChain
 from langchain_openai import ChatOpenAI
-from langchain.output_parsers.json import SimpleJsonOutputParser
+from langchain_classic.output_parsers.json import SimpleJsonOutputParser
 from langsmith import Client
 from langsmith import traceable
 from langsmith.run_helpers import get_current_run_tree
@@ -13,6 +13,7 @@ from functools import partial
 import gspread
 import json
 from google.oauth2.service_account import Credentials
+
 
 import os
 import sys
